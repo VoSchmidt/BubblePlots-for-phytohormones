@@ -2,8 +2,7 @@
  R workflow for comprehensive visualization of analytical data using tidyverse and ggplot
  authors: Vojtěch Schmidt, Stanislav Vosolsobě
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup}
 ```
 
 ![](images/main_figure_1_new.png){}
@@ -65,7 +64,6 @@ install.packages("readxl")
 ```
 
 ```{r, results="hide", warnings=FALSE}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
 #LOADING PACKAGES
 library("tidyverse")
 library("readxl")
