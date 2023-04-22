@@ -1,6 +1,14 @@
-# BubblePlots-for-phytohormones
- R workflow for comprehensive visualization of analytical data using tidyverse and ggplot
- authors: Vojtěch Schmidt, Stanislav Vosolsobě
+---
+title: "Visualizing Phytohormone Profiles: A Comprehensive Analytical Workflow"
+author: "Vojtěch Schmidt"
+date: "2023-04"
+output:
+  html_document: default
+  pdf_document: default
+editor_options: 
+  markdown: 
+    wrap: 72
+---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
