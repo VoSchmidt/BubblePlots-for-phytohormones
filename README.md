@@ -252,6 +252,8 @@ bio_blank_plot <- ggplot(df0, aes(key, id)) +
 bio_blank_plot
 ```
 
+![](images/bioimass-blank_relation.png)
+
 In the same fashion, we can generate a plot for culture media and their relation to blank media. You can use the `%>%` (pipe) symbol to save yourself a few lines of code and couple the plot generation with the transforming to long tables:
 
 ```R 
@@ -280,6 +282,7 @@ df3 <- med_bio %>%
   ggtitle("Media/biomass relation")
 df3
 
+![](images/media-biomass_relation.png)
 
 df4 <- med_blank %>%
   rownames_to_column(var = "id") %>%
@@ -301,6 +304,7 @@ df4 <- med_blank %>%
   ggtitle("Media/blanks relation")
 df4
 ```
+![](images/media-blanks_relation.png)
 
 And this is pretty much it! Once you've exported the plots, you can make some final tweaks in Illustrator or any other graphical editor to suit your personal preferences, but it's not necessary.
 
