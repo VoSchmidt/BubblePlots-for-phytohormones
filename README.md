@@ -289,7 +289,6 @@ df4 <- med_blank %>%
   gather(key, MedBlankRatio, -id) %>%
   ggplot(aes(key, id)) +
   geom_point(aes(size = df2$Ratio, fill = MedBlankRatio ), shape = 21) +
-  #scale_fill_gradient2(name = "log(biomass/medium)", high = "brown",, mid = "white", low = "blue")+
   scale_fill_gradientn(colours = rampcols_med_blank, na.value = "grey20") +
   scale_size(name = "medium \n[pmol/g]",
              trans = "pseudo_log",
