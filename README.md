@@ -251,8 +251,7 @@ bio_blank_plot <- ggplot(df0, aes(key, id)) +
 
 bio_blank_plot
 ```
-
-![](images/bioimass-blank_relation.png)
+![](images/biomass-blank_relation.png)
 
 In the same fashion, we can generate a plot for culture media and their relation to blank media. You can use the `%>%` (pipe) symbol to save yourself a few lines of code and couple the plot generation with the transforming to long tables:
 
@@ -281,9 +280,10 @@ df3 <- med_bio %>%
         axis.title.y = element_blank())+
   ggtitle("Media/biomass relation")
 df3
-
+```
 ![](images/media-biomass_relation.png)
 
+```R 
 df4 <- med_blank %>%
   rownames_to_column(var = "id") %>%
   gather(key, MedBlankRatio, -id) %>%
