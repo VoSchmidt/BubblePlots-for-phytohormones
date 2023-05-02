@@ -1,12 +1,12 @@
 # BubblePlots-for-phytohormones
  R workflow for comprehensive visualization of analytical data using tidyverse and ggplot
+ 
  authors: Vojtěch Schmidt, Stanislav Vosolsobě
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup}
 ```
 
-![](images/main_figure_1_new.png){}
+![](images/main_figure_1_new.png)
 
 ## Introduction
 
@@ -39,7 +39,7 @@ compound excretion and environmental background. This approach provides
 a more comprehensive understanding of the data and enhances the
 interpretation of the results.
 
-![**Figure 1:** Sampling setup](images/box1_new.png){width="50%"}
+![**Figure 1:** Sampling setup](images/box1_new.png)
 
 Hence, this workflow aims to **convey two types of information within a
 single plot:**
@@ -58,14 +58,13 @@ These two are included within the well-known `tidyverse` collection of
 data packages. To load the Excel dataset, we will use the `readxl`
 package.
 
-```         
+```R         
 #INSTALLING PACKAGES
 install.packages("tidyverse")
 install.packages("readxl")
 ```
 
-```{r, results="hide", warnings=FALSE}
-knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```R
 #LOADING PACKAGES
 library("tidyverse")
 library("readxl")
@@ -79,7 +78,7 @@ It includes concentrations measured in the **biomass** samples of
 streptophyte algae and corresponding culture **media** and control
 (**blank**) media.
 
-```{r}
+```R
 dataset <- read_excel("data/tutorial_dataset.xlsx",na="NA") 
 ```
 
@@ -88,7 +87,7 @@ dataset <- read_excel("data/tutorial_dataset.xlsx",na="NA")
 Having three sample categories (biomass, medium, and blank), we will
 firstly make individual subsets.
 
-```{r}
+```R
 biomas <- subset(dataset,(type=="biomass"))
 medium <- subset(dataset,(type=="medium"))  
 blank <- subset(dataset,(type=="blank"))
@@ -103,7 +102,7 @@ contains only values.
 This is done separately for each subset created previously. Biomass, medium, and blank data now have separate data frames with identical dimensions, and we can later relate these types of samples to one
 another.
 
-```{r}
+```R
 biomasm <- aggregate(biomas[,4:ncol(dataset)], list(biomas$species), mean, na.rm = T)
 rownames(biomasm) <- biomasm[,1]
 biomasm[,1] <- NULL
@@ -121,7 +120,7 @@ To make these relations, we need to convert our three new data frames to matrice
 
 Within this conversion, we also need to have the values in a numeric format, otherwise the calculations would not work.
 
-```{r}
+```R
 biomasm_num <- apply(as.matrix.noquote(biomasm), 2, as.numeric)
 mediumm_num <- apply(as.matrix.noquote(mediumm), 2, as.numeric)
 blankm_num <- apply(as.matrix.noquote(blankm), 2, as.numeric)
@@ -132,7 +131,7 @@ Now we can calculate ratios between our three sample types, which will be later 
 
 We are mainly interested in the comparison of biomass and blank. A logarithmic ratio of these matrices is converted to a new matrix (`bio_blank`, as here). Similarly, we can mutually compare culture media with biomass (`med_bio`) or blanks (`med_blank`).
 
-```{r}
+```R
 bio_blank <- log(biomasm_num/blankm_num)
 med_bio <- log(mediumm_num/biomasm_num)
 med_blank <- log(mediumm_num/blankm_num)
@@ -140,7 +139,7 @@ med_blank <- log(mediumm_num/blankm_num)
 
 However, these calculations will generate non-finite values (`NaN`) in case a compound is absent. Therefore, these values are selected and set to `NA`.
 
-```{r}       
+```R      
 bio_blank[!is.finite(bio_blank)] <- NA
 med_bio[!is.finite(med_bio)] <- NA
 med_blank[!is.finite(med_blank)] <- NA
@@ -151,7 +150,7 @@ Now, we can convert matrices back do data frames including matrices with origina
 
 Finally, `rownames` are set from the original data frames.
 
-```{r} 
+```R 
 bio_blank <- as.data.frame(bio_blank) 
 med_bio <- as.data.frame(med_bio) 
 med_blank <- as.data.frame(med_blank)
@@ -171,7 +170,7 @@ Given the range of ratios (even in log scale) we will define a new color palette
 
 NOTE: These palettes are customized for our data, generally you can skip this step and start by using a pre-defined color palette during the plotting of your data.
 
-```{r} 
+```R
 rc1 <- colorRampPalette(colors = c("blue", "white"), space = "rgb")(20*abs(min(na.rm = T,bio_blank)))
 rc2 <- colorRampPalette(colors = c("white", "darkred", "grey20"), space = "rgb")(20*max(na.rm = T,bio_blank))
 rampcols_bio_blank <- c(rc1, rc2)
@@ -191,7 +190,7 @@ rampcols_med_blank <- c(rc1, rc2)
 
 To define the order of species for the y-axis of the plot, we will create a vector of species names based on their phylogenetic relation. The order will be reversed so that early diverging species appear at the top of the plot.
 
-```{r} 
+```R
 names <- c("Mesostigma","Chlorokybus","Klebsormidium","Interfilum","Chara","Coleochaete",
                  "Mesotaenium","Closterium","Mougeotia","Spirogyra")
 rev_names <- rev(names)
@@ -200,7 +199,7 @@ rev_names <- rev(names)
 
 Now, we will take `bio_abs` and `bio_blank` data frames and transform them to a long format using the `dplyr` pipeline (`%>%`) and `gather` function. These data frame will be used to plot the data.
 
-```{r} 
+```R 
 df0 <-bio_abs %>%
   rownames_to_column(var = "id") %>%
   gather(key, conc, -id)
@@ -223,7 +222,7 @@ Now, the main magic happens within few lines of code as follows:
 
 Finally, there are some adjustments of axes, such as positioning of x at the top, applying the `names` vector for the desired order of species (otherwise they would be ordered alphabetically), or setting an angle for the compound labels.
 
-```{r} 
+```R
 bio_blank_plot <- ggplot(df0, aes(key, id)) +
                          geom_point(aes(size = df0$conc, fill = df1$BioBlankRatio,), shape = 21) +
   
@@ -255,7 +254,7 @@ bio_blank_plot
 
 In the same fashion, we can generate a plot for culture media and their relation to blank media. You can use the `%>%` (pipe) symbol to save yourself a few lines of code and couple the plot generation with the transforming to long tables:
 
-```{r} 
+```R 
 # MEDIA PLOTS ----
 df2 <- med_abs %>%
   rownames_to_column(var = "id") %>%
