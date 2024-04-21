@@ -2,6 +2,8 @@
  R workflow for comprehensive visualization of analytical data using tidyverse and ggplot
  
  authors: Vojtěch Schmidt, Stanislav Vosolsobě
+ 
+[![DOI:10.1038/s41467-024-47753-z](http://img.shields.io/badge/DOI-10.1038/s41467-024-47753-z-B31B1B.svg)](https://doi.org/10.1038/s41467-024-47753-z)
 
 ```{r setup}
 ```
@@ -15,7 +17,7 @@ phytohormone contents. It was initially designed to plot the data
 obtained in our study 'Phytohormone profiling in an evolutionary
 framework', where we analyzed the phytohormone profiles in streptophyte
 green algae
-(<https://www.biorxiv.org/content/10.1101/2023.04.06.534998v1.full>).
+https://doi.org/10.1038/s41467-024-47753-z
 
 Of course, this R code workflow can also be adapted for the
 comprehensive presentation of other types of analytical data. Its
@@ -309,7 +311,10 @@ And this is pretty much it! Once you've exported the plots, you can make some fi
 
 ## Conclusion
 
-It is important to note that this script was written by a PhD student in plant biology, not by a crackerjack coder. :) As a result, it may not be perfect, but it effectively generates a scatterplot that visualizes the relationship between the concentration of compounds and sample-to-blank ratio for each species. Although this approach works well for our data, it may require further fine-tuning to fit your specific needs. We encourage you to experiment and adjust the code to best suit your data and research questions.
+This workflow effectively generates a scatterplot that visualizes the relationship between the concentration of compounds and sample-to-blank ratio for each species. Although this approach works well for our data, it may require further fine-tuning to fit your specific needs. We encourage you to experiment and adjust the code to best suit your data and research questions.
+
+If you use this code for your work, please cite the original study:
+https://doi.org/10.1038/s41467-024-47753-z
 
 
 
